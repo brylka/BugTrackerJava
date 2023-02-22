@@ -4,9 +4,13 @@
 
 <title layout:fragment="title" th:text="#{hello.world}"></title>
 
-<div layout:fragment="content">
+
+<section class="container" layout:fragment="content">
+
     <h1 th:text="#{hello.world}">Hello World!</h1>
 
     <p th:text="${#authentication.principal}"></p>
 
-</div>
+</section>
+
+
