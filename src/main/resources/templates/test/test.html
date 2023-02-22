@@ -1,0 +1,12 @@
+<html th:lang="${#locale.language}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<title layout:fragment="title" th:text="#{hello.world}"></title>
+
+<div layout:fragment="content">
+    <h1 th:text="#{hello.world}">Hello World!</h1>
+
+    <p th:text="${#authentication.principal}"></p>
+
+</div>
