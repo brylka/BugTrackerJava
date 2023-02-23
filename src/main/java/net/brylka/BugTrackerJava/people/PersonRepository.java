@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecificationExecutor<Person> {
-    Person findByUsername(String username);
+    Person findByUsernameAndEnabled(String username, Boolean enabled);
 }

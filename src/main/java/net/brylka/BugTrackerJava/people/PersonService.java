@@ -35,7 +35,7 @@ public class PersonService {
 
     public void prepareAdminUser() {
 
-        if (personRepository.findByUsername(myAdminUsername) == null) {
+        if (personRepository.findByUsernameAndEnabled(myAdminUsername, true) == null) {
 
             System.out.println("Tworzymy administratora: login: " + myAdminUsername + " passwd: " +
                     myAdminPassword + " email: " + myAdminEmail + " nazwa: " + myAdminName);
@@ -57,5 +57,9 @@ public class PersonService {
 
     protected List<Authority> findAuthorities() {
         return (List<Authority>) authorityRepository.findAll();
+    }
+
+    public void deletePerson(Long id) {
+        personRepository.deleteById(id);
     }
 }
