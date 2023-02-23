@@ -1,0 +1,94 @@
+<html th:lang="${#locale.language}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<title layout:fragment="title" th:text="#{people.title}"></title>
+
+<section class="container" layout:fragment="content">
+
+        <h2 th:text="#{people.title}"></h2>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" th:text="#{people.username}">login</th>
+                <th scope="col" th:text="#{people.name}">name</th>
+                <th scope="col" th:text="#{people.email}">email</th>
+                <th scope="col" th:text="#{people.enabled}">enabled</th>
+                <th scope="col" th:text="#{people.edit}">edit</th>
+                <th scope="col" th:text="#{people.delete}">delete</th>
+                <th scope="col" th:text="#{people.roles}">roles</th>
+            </tr>
+            </thead>
+            <tbody th:each="user, nr : ${person}">
+            <tr>
+                <th scope="row" th:text="${nr.index + 1}"></th>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:if="${user.enabled == true}">
+                    <button type="button" class="btn btn-success" th:id="${'btn-'+ nr.index}" th:data-id="${user.id}" data-enabled="true">YES</button>
+                </td>
+                <td th:unless="${user.enabled == true}">
+                    <button type="button" class="btn btn-danger" th:id="${'btn-'+ nr.index}" th:data-id="${user.id}" data-enabled="false">NO</button>
+                </td>
+                <td>
+                    <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-primary" th:text="#{people.edit}"></a>
+                </td>
+                <td>
+                    <a th:href="@{/user/delete/{id}(id=${user.id})}" class="btn btn-danger" th:text="#{people.delete}"></a>
+                </td>
+                <td>
+                        <span th:each="role : ${user.getAuthorities}">
+                            <div th:text="${role.name}"></div>
+                        </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<script layout:fragment="script">
+
+    $(document).ready(function () {
+        $('button').click(function () {
+            var token = $('#_csrf').attr('content');
+            var id = $(this).attr('id');
+            var index = id.substring(4);
+            var id2 = $(this).attr('data-id');
+            var enabled = $(this).attr('data-enabled');
+            var username = $('tbody tr:eq(' + index + ') td:eq(0)').text();
+            var state = $('tbody tr:eq(' + index + ') td:eq(5)').text();
+            var btn_id = $(this).attr('id');
+            $.ajax({
+                method: "POST",
+                url: "/user/update",
+                data: {
+                    "_csrf": token,
+                    "id": id2,
+                    "username": username,
+                    "enabled": enabled,
+                    "state": state
+                },
+                success: function (result) {
+                    if (enabled == "false") {
+                        $("#"+btn_id).text("YES");
+                        $("#"+btn_id).attr("data-enabled", "true");
+                        $("#"+btn_id).removeClass("btn-danger");
+                        $("#"+btn_id).addClass("btn-success");
+                    } else {
+                        $("#"+btn_id).text("NO");
+                        $("#"+btn_id).attr("data-enabled", "false");
+                        $("#"+btn_id).removeClass("btn-success");
+                        $("#"+btn_id).addClass("btn-danger");
+                    }
+                },
+                failure: function (errMsg) {
+                    alert(errMsg);
+                }
+            });
+        });
+    });
+</script>
