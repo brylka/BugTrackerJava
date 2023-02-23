@@ -1,0 +1,39 @@
+<html th:lang="${#locale.language}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<title layout:fragment="title" th:text="#{issue.title.list}"></title>
+
+<section class="container" layout:fragment="content">
+
+        <h2 th:text="#{issue.title.list}"></h2>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" th:text="#{issue.project.name}"></th>
+                <th scope="col" th:text="#{issue.state}"></th>
+                <th scope="col" th:text="#{issue.name}"></th>
+                <th scope="col" th:text="#{issue.code}"></th>
+                <th scope="col" th:text="#{issue.description}"></th>
+                <th scope="col" th:text="#{issue.assignee}"></th>
+                <th scope="col" th:text="#{issue.edit}"></th>
+            </tr>
+            </thead>
+            <tbody th:each="issue, nr : ${issues}">
+            <tr>
+                <th scope="row" th:text="${nr.index + 1}"></th>
+                <td th:text="${issue.project.name}"></td>
+                <td th:text="${issue.state}"></td>
+                <td th:text="${issue.name}"></td>
+                <td th:text="${issue.code}"></td>
+                <td th:text="${issue.description}"></td>
+                <td th:if="${issue.assignee != null}" th:text="${issue.assignee.name}"></td>
+                <td>
+                    <a th:href="@{/issue/edit/{id}(id=${issue.id})}" class="btn btn-primary" th:text="#{issue.edit}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</section>

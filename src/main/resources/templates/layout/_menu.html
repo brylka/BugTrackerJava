@@ -20,6 +20,13 @@
                             <a class="dropdown-item" th:href="@{/project/create}" th:text="#{menu.projects.create}"></a>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a th:text="#{menu.issues}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                            <a class="dropdown-item" th:href="@{/issue/}" th:text="#{menu.issues.list}"></a>
+                            <a class="dropdown-item" th:href="@{/issue/create}" th:text="#{menu.issues.create}"></a>
+                        </div>
+                    </li>
 
                     <li class="nav-item dropdown">
                         <a th:text="#{menu.users}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>

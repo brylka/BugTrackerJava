@@ -11,6 +11,7 @@ import net.brylka.BugTrackerJava.enums.State;
 import net.brylka.BugTrackerJava.enums.Type;
 import net.brylka.BugTrackerJava.people.Person;
 import net.brylka.BugTrackerJava.project.Project;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -54,6 +55,10 @@ public class Issue {
 
     @Enumerated(EnumType.STRING)
     private Priority priority;
+
+    @Column(nullable = false)
+    @ColumnDefault(value = "true")
+    private Boolean enabled  = true;
 
     public Issue(String name, String description, String code, Project project, Person creator, Person assignee, State state, Type type, Priority priority) {
         this.name = name;
