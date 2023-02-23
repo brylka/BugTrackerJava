@@ -1,0 +1,26 @@
+<html th:lang="${#locale.language}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<title layout:fragment="title" th:text="#{project.title.show}"></title>
+
+
+<section class="container" layout:fragment="content">
+
+        <h2 th:text="#{project.title.show}"></h2>
+
+        <form th:action="@{/project/save}" th:object="${project}" method="post">
+            <div class="form-group">
+                <label for="name" th:text="#{project.name}"></label>
+                <input type="text" class="form-control" id="name" th:field="*{name}" th:placeholder="#{project.placeholder.name}" autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label for="code" th:text="#{project.code}"></label>
+                <input type="text" class="form-control" id="code" th:field="*{code}" th:placeholder="#{project.placeholder.code}" autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label for="description" th:text="#{project.description}"></label>
+                <textarea type="text" class="form-control" id="description" rows="10" th:field="*{description}" th:placeholder="#{project.placeholder.description}" required></textarea>
+            </div>
+        </form>
+</section>

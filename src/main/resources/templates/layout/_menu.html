@@ -14,6 +14,14 @@
                     </li>
 
                     <li class="nav-item dropdown">
+                        <a th:text="#{menu.projects}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                            <a class="dropdown-item" th:href="@{/project/}" th:text="#{menu.projects.list}"></a>
+                            <a class="dropdown-item" th:href="@{/project/create}" th:text="#{menu.projects.create}"></a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
                         <a th:text="#{menu.users}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
                             <a class="dropdown-item" th:href="@{/user/}" th:text="#{menu.users.list}"></a>

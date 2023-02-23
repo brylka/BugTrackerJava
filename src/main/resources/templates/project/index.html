@@ -1,0 +1,33 @@
+<html th:lang="${#locale.language}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<title layout:fragment="title" th:text="#{project.title.list}"></title>
+
+<section class="container" layout:fragment="content">
+
+        <h2 th:text="#{project.title.list}"></h2>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" th:text="#{project.name}">name</th>
+                <th scope="col" th:text="#{project.code}">edit</th>
+                <th scope="col" th:text="#{project.description}">description</th>
+                <th scope="col" th:text="#{project.edit}">edit</th>
+            </tr>
+            </thead>
+            <tbody th:each="project, nr : ${projects}">
+            <tr>
+                <th scope="row" th:text="${nr.index + 1}"></th>
+                <td th:text="${project.name}"></td>
+                <td th:text="${project.code}"></td>
+                <td th:text="${project.description}"></td>
+                <td>
+                    <a th:href="@{/project/edit/{id}(id=${project.id})}" class="btn btn-primary" th:text="#{project.edit}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</section>

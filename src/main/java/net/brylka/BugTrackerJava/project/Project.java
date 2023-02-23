@@ -1,14 +1,12 @@
 package net.brylka.BugTrackerJava.project;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -31,7 +29,9 @@ public class Project {
     @Size(max = 20)
     private String code;
 
-    private Boolean enabled;
+    @Column(nullable = false)
+    @ColumnDefault(value = "true")
+    private Boolean enabled  = true;
 
     public Project(String name, String description, String code) {
         this.name = name;
