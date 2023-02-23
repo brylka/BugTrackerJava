@@ -10,6 +10,8 @@
         <h2 th:text="#{project.title.show}"></h2>
 
         <form th:action="@{/project/save}" th:object="${project}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{enabled}">
             <div class="form-group">
                 <label for="name" th:text="#{project.name}"></label>
                 <input type="text" class="form-control" id="name" th:field="*{name}" th:placeholder="#{project.placeholder.name}" autocomplete="off" required>
@@ -21,6 +23,9 @@
             <div class="form-group">
                 <label for="description" th:text="#{project.description}"></label>
                 <textarea type="text" class="form-control" id="description" rows="10" th:field="*{description}" th:placeholder="#{project.placeholder.description}" required></textarea>
+            </div>
+            <div>
+                <button class="btn btn-primary mt-4" type="submit" th:text="#{button.save}"></button>
             </div>
         </form>
 </section>

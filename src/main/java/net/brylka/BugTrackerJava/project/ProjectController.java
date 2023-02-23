@@ -1,10 +1,7 @@
 package net.brylka.BugTrackerJava.project;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -39,6 +36,13 @@ public class ProjectController {
         ModelAndView modelAndView = new ModelAndView();
         projectService.saveProject(project);
         modelAndView.setViewName("redirect:/project/");
+        return modelAndView;
+    }
+
+    @GetMapping("/edit/{id}")
+    ModelAndView edit(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("project/show");
+        modelAndView.addObject("project", projectRepository.findById(id).orElseThrow());
         return modelAndView;
     }
 }
