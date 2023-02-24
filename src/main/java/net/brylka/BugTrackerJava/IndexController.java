@@ -14,7 +14,7 @@ public class IndexController {
     }
 
     @RequestMapping("/hello")
-    @Secured("ROLE_ADMIN")
+    //@Secured("ROLE_ADMIN")
     public String hello() {
         return "test/test";
     }

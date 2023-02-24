@@ -17,7 +17,7 @@
                         <a th:text="#{menu.projects}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
                             <a class="dropdown-item" th:href="@{/project/}" th:text="#{menu.projects.list}"></a>
-                            <a class="dropdown-item" th:href="@{/project/create}" th:text="#{menu.projects.create}"></a>
+                            <a sec:authorize="hasRole('ROLE_MANAGE_PROJECT')" class="dropdown-item" th:href="@{/project/create}" th:text="#{menu.projects.create}"></a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -28,11 +28,11 @@
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li sec:authorize="hasRole('ROLE_USER_TAB') or hasRole('ROLE_MANAGE_USERS')" class="nav-item dropdown">
                         <a th:text="#{menu.users}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                            <a class="dropdown-item" th:href="@{/user/}" th:text="#{menu.users.list}"></a>
-                            <a class="dropdown-item" th:href="@{/user/create}" th:text="#{menu.users.create}"></a>
+                            <a sec:authorize="hasRole('ROLE_USER_TAB')" class="dropdown-item" th:href="@{/user/}" th:text="#{menu.users.list}"></a>
+                            <a sec:authorize="hasRole('ROLE_MANAGE_USERS')" class="dropdown-item" th:href="@{/user/create}" th:text="#{menu.users.create}"></a>
                         </div>
                     </li>
 

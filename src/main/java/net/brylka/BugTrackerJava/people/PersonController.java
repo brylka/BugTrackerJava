@@ -3,6 +3,7 @@ package net.brylka.BugTrackerJava.people;
 import jakarta.validation.Valid;
 import net.brylka.BugTrackerJava.authority.AuthorityRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class PersonController {
     }
 
     @RequestMapping("/")
+    @Secured("ROLE_USER_TAB")
     ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("people/index");
         modelAndView.addObject("person", personRepository.findAll());
@@ -31,6 +33,7 @@ public class PersonController {
     }
 
     @GetMapping("/create")
+    @Secured("ROLE_MANAGE_USERS")
     ModelAndView showNewUserForm() {
         ModelAndView modelAndView = new ModelAndView("people/create");
         modelAndView.addObject("person", new Person());
@@ -39,6 +42,7 @@ public class PersonController {
     }
 
     @PostMapping("/save")
+    @Secured("ROLE_MANAGE_USERS")
     ModelAndView createNewUser(@ModelAttribute @Valid Person person) {
         ModelAndView modelAndView = new ModelAndView();
         personService.savePerson(person);
@@ -47,6 +51,7 @@ public class PersonController {
     }
 
     @GetMapping("/edit/{id}")
+    @Secured("ROLE_MANAGE_USERS")
     ModelAndView showEditUserForm(@ModelAttribute @PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("people/edit");
         modelAndView.addObject("person", personRepository.findById(id).orElseThrow());
@@ -55,6 +60,7 @@ public class PersonController {
     }
 
     @PostMapping("/edited")
+    @Secured("ROLE_MANAGE_USERS")
     ModelAndView editUser(@ModelAttribute @Valid Person person) {
         ModelAndView modelAndView = new ModelAndView();
         personService.savePerson(person);
@@ -63,6 +69,7 @@ public class PersonController {
     }
 
     @GetMapping("/delete/{id}")
+    @Secured("ROLE_MANAGE_USERS")
     ModelAndView deleteUser(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView();
         personService.deletePerson(id);
@@ -71,6 +78,7 @@ public class PersonController {
     }
 
     @PostMapping("/enable")
+    @Secured("ROLE_MANAGE_USERS")
     ResponseEntity<Void> updateEnabled(@RequestParam("id") Long id) {
         Person person = personRepository.findById(id).orElseThrow();
         person.setEnabled(!person.getEnabled());

@@ -1,5 +1,6 @@
 package net.brylka.BugTrackerJava.project;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,6 +26,7 @@ public class ProjectController {
     }
 
     @GetMapping("/create")
+    @Secured("ROLE_MANAGE_PROJECT")
     ModelAndView createNewProject() {
         ModelAndView modelAndView = new ModelAndView("project/show");
         modelAndView.addObject("project", new Project());
@@ -32,6 +34,7 @@ public class ProjectController {
     }
 
     @PostMapping("/save")
+    @Secured("ROLE_MANAGE_PROJECT")
     ModelAndView saveProject(@ModelAttribute Project project) {
         ModelAndView modelAndView = new ModelAndView();
         projectService.saveProject(project);
@@ -40,6 +43,7 @@ public class ProjectController {
     }
 
     @GetMapping("/edit/{id}")
+    @Secured("ROLE_MANAGE_PROJECT")
     ModelAndView edit(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("project/show");
         modelAndView.addObject("project", projectRepository.findById(id).orElseThrow());

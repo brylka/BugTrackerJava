@@ -37,9 +37,8 @@
             <div th:each="authority : ${authorities}">
                 <input name="roles" type="checkbox"
                        th:value="${authority.id}"
-                       th:text="${authority.name}"
                        th:field="*{authorities}">
-                <label th:text="${authority.name}" for="${#ids.prev(roles)}"></label>
+                <label th:text="${#messages.msg('authority.' + authority.name)}" for="${#ids.prev(roles)}"></label>
             </div>
 
         </td>
