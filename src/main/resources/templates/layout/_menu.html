@@ -1,6 +1,6 @@
 <div xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <div class="container">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light border-bottom">
+        <div class="container-fluid">
             <a class="navbar-brand" th:href="@{/}">BugTracker</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -14,37 +14,38 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a th:text="#{menu.projects}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <a th:text="#{menu.projects}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                        <ul class="dropdown-menu">
                             <a class="dropdown-item" th:href="@{/project/}" th:text="#{menu.projects.list}"></a>
                             <a sec:authorize="hasRole('ROLE_MANAGE_PROJECT')" class="dropdown-item" th:href="@{/project/create}" th:text="#{menu.projects.create}"></a>
-                        </div>
+                        </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a th:text="#{menu.issues}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                        <a th:text="#{menu.issues}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                        <ul class="dropdown-menu">
                             <a class="dropdown-item" th:href="@{/issue/}" th:text="#{menu.issues.list}"></a>
                             <a class="dropdown-item" th:href="@{/issue/create}" th:text="#{menu.issues.create}"></a>
-                        </div>
+                        </ul>
                     </li>
 
                     <li sec:authorize="hasRole('ROLE_USER_TAB') or hasRole('ROLE_MANAGE_USERS')" class="nav-item dropdown">
-                        <a th:text="#{menu.users}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                        <a th:text="#{menu.users}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                        <ul class="dropdown-menu">
                             <a sec:authorize="hasRole('ROLE_USER_TAB')" class="dropdown-item" th:href="@{/user/}" th:text="#{menu.users.list}"></a>
                             <a sec:authorize="hasRole('ROLE_MANAGE_USERS')" class="dropdown-item" th:href="@{/user/create}" th:text="#{menu.users.create}"></a>
-                        </div>
+                        </ul>
                     </li>
-
-                    </li>
+                </ul>
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
-                        <a th:text="${#authentication.principal.username}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a th:text="${#authentication.principal.username}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                        <ul class="dropdown-menu">
                             <a th:text="#{menu.logout}" class="dropdown-item" th:href="@{/logout}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();"></a>
                             <form id="logout-form" th:action="@{/logout}" method="POST" class="d-none">
                             </form>
-                        </div>
+                        </ul>
                     </li>
                 </ul>
             </div>
