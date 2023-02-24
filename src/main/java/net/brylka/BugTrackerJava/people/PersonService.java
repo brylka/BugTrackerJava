@@ -45,11 +45,11 @@ public class PersonService {
             List<Authority> authorities = (List<Authority>) authorityRepository.findAll();
             person.setAuthorities(new HashSet<>(authorities));
 
-            savePerson(person);
+            savePersonAccount(person);
         }
     }
 
-    protected void savePerson(Person person) {
+    protected void savePersonAccount(Person person) {
         String hashedPassword = bCryptPasswordEncoder.encode(person.password);
         person.setPassword(hashedPassword);
         personRepository.save(person);
@@ -61,5 +61,17 @@ public class PersonService {
 
     public void deletePerson(Long id) {
         personRepository.deleteById(id);
+    }
+
+    public Person editPerson(Long id) {
+        return personRepository.findById(id).orElseThrow();
+    }
+
+    public void savePersonAccount(PersonAccount personAccount) {
+        Person person = personRepository.findById(personAccount.getId()).orElseThrow();
+        person.setUsername(personAccount.getUsername());
+        person.setName(personAccount.getName());
+        person.setEmail(personAccount.getEmail());
+        personRepository.save(person);
     }
 }

@@ -4,7 +4,8 @@ import jakarta.validation.Valid;
 import net.brylka.BugTrackerJava.authority.AuthorityRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,7 +46,7 @@ public class PersonController {
     @Secured("ROLE_MANAGE_USERS")
     ModelAndView createNewUser(@ModelAttribute @Valid Person person) {
         ModelAndView modelAndView = new ModelAndView();
-        personService.savePerson(person);
+        personService.savePersonAccount(person);
         modelAndView.setViewName("redirect:/user/");
         return modelAndView;
     }
@@ -63,7 +64,7 @@ public class PersonController {
     @Secured("ROLE_MANAGE_USERS")
     ModelAndView editUser(@ModelAttribute @Valid Person person) {
         ModelAndView modelAndView = new ModelAndView();
-        personService.savePerson(person);
+        personService.savePersonAccount(person);
         modelAndView.setViewName("redirect:/user/");
         return modelAndView;
     }
@@ -84,5 +85,23 @@ public class PersonController {
         person.setEnabled(!person.getEnabled());
         personRepository.save(person);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/account")
+    ModelAndView showUserAccount() {
+        ModelAndView modelAndView = new ModelAndView("people/account");
+        String id = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        Person person = personRepository.findByUsername(id);
+        modelAndView.addObject("authorities", personService.findAuthorities());
+        modelAndView.addObject("personAccount", personService.editPerson(person.getId()));
+        return modelAndView;
+    }
+
+    @PostMapping("/account")
+    ModelAndView editUserAccount(@ModelAttribute @Valid PersonAccount personAccount) {
+        ModelAndView modelAndView = new ModelAndView();
+        personService.savePersonAccount(personAccount);
+        modelAndView.setViewName("redirect:/user/account");
+        return modelAndView;
     }
 }
