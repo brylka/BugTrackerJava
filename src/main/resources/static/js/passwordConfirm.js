@@ -11,7 +11,7 @@ document.querySelector("#formPassword").addEventListener('submit', function (e) 
     if (password === '') {
         document.querySelector("#password").style.border = "2px solid red";
         document.querySelector(".alert").style.display = "block";
-        document.querySelector(".alert").innerText = "Pole hasło nie może być puste!";
+        document.querySelector(".alert").innerText = passwordBlank;
         setTimeout(function () {
             document.querySelector(".alert").style.display = "none";
         }, 5000)
@@ -22,7 +22,7 @@ document.querySelector("#formPassword").addEventListener('submit', function (e) 
         document.querySelector("#password").style.border = "2px solid red";
         document.querySelector("#passwordConfirm").style.border = "2px solid red";
         document.querySelector(".alert").style.display = "block";
-        document.querySelector(".alert").innerText = "Hasła nie są takie same!";
+        document.querySelector(".alert").innerText = passwordNotConfirmed;
         setTimeout(function () {
             document.querySelector(".alert").style.display = "none";
         }, 5000)
@@ -33,7 +33,7 @@ document.querySelector("#formPassword").addEventListener('submit', function (e) 
         document.querySelector("#password").style.border = "2px solid red";
         document.querySelector("#passwordConfirm").style.border = "2px solid red";
         document.querySelector(".alert").style.display = "block";
-        document.querySelector(".alert").innerText = "Hasło musi zawierać co najmniej 8 znaków!";
+        document.querySelector(".alert").innerText = passwordMinLength;
         setTimeout(function () {
             document.querySelector(".alert").style.display = "none";
         }, 5000)
@@ -44,7 +44,7 @@ document.querySelector("#formPassword").addEventListener('submit', function (e) 
         document.querySelector("#password").style.border = "2px solid red";
         document.querySelector("#passwordConfirm").style.border = "2px solid red";
         document.querySelector(".alert").style.display = "block";
-        document.querySelector(".alert").innerText = "Hasło musi zawierać małe litery!";
+        document.querySelector(".alert").innerText = passwordLowerCase;
         setTimeout(function () {
             document.querySelector(".alert").style.display = "none";
         }, 5000)
@@ -55,7 +55,7 @@ document.querySelector("#formPassword").addEventListener('submit', function (e) 
         document.querySelector("#password").style.border = "2px solid red";
         document.querySelector("#passwordConfirm").style.border = "2px solid red";
         document.querySelector(".alert").style.display = "block";
-        document.querySelector(".alert").innerText = "Hasło musi zawierać duże litery!";
+        document.querySelector(".alert").innerText = passwordUpperCase;
         setTimeout(function () {
             document.querySelector(".alert").style.display = "none";
         }, 5000)
@@ -66,7 +66,7 @@ document.querySelector("#formPassword").addEventListener('submit', function (e) 
         document.querySelector("#password").style.border = "2px solid red";
         document.querySelector("#passwordConfirm").style.border = "2px solid red";
         document.querySelector(".alert").style.display = "block";
-        document.querySelector(".alert").innerText = "Hasło musi zawierać cyfry!";
+        document.querySelector(".alert").innerText = passwordNumber;
         setTimeout(function () {
             document.querySelector(".alert").style.display = "none";
         }, 5000)
