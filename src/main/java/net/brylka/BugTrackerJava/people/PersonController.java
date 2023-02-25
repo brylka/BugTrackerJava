@@ -116,7 +116,6 @@ public class PersonController {
 
     @PostMapping("/password")
     ModelAndView editUserPassword(@ModelAttribute @Valid PersonPassword personPassword) {
-        // TODO sprawdzanie poprawności wproawdzanego hasła
         ModelAndView modelAndView = new ModelAndView();
         personService.savePersonPassword(personPassword);
         modelAndView.setViewName("redirect:/user/password");
