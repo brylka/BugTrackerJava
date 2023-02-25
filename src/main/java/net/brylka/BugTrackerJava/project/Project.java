@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.Date;
 
 @Getter
 @Setter
@@ -32,6 +35,10 @@ public class Project {
     @Column(nullable = false)
     @ColumnDefault(value = "true")
     private Boolean enabled  = true;
+
+    @CreationTimestamp
+    @Column(name = "date_created", nullable = false, updatable=false)
+    private Date dateCreated;
 
     public Project(String name, String description, String code) {
         this.name = name;

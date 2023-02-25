@@ -9,8 +9,9 @@
     <h2 th:text="#{issue.title.show}"></h2>
 
     <form th:action="@{/issue/save}" th:object="${issue}" method="post">
-        <input type="hidden" th:field="*{id}" id="issue-id"/>
-        <input type="hidden" th:field="*{creator}" id="creator" th:value="${#authentication.principal}"/>
+        <input type="hidden" th:field="*{id}" id="issue-id">
+        <input type="hidden" th:field="*{creator}" id="creator" th:value="${#authentication.principal}">
+
         <div class="form-group">
             <label class="col-form-label" th:text="#{issue.project}"></label>
             <select class="form-control" th:field="*{project}">

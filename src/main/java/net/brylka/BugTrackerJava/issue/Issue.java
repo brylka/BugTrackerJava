@@ -12,6 +12,9 @@ import net.brylka.BugTrackerJava.enums.Type;
 import net.brylka.BugTrackerJava.people.Person;
 import net.brylka.BugTrackerJava.project.Project;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.Date;
 
 @Getter
 @Setter
@@ -59,6 +62,10 @@ public class Issue {
     @Column(nullable = false)
     @ColumnDefault(value = "true")
     private Boolean enabled  = true;
+
+    @CreationTimestamp
+    @Column(name = "date_created", nullable = false, updatable=false)
+    private Date dateCreated;
 
     public Issue(String name, String description, String code, Project project, Person creator, Person assignee, State state, Type type, Priority priority) {
         this.name = name;

@@ -18,6 +18,7 @@
                 <th scope="col" th:text="#{issue.code}"></th>
                 <th scope="col" th:text="#{issue.description}"></th>
                 <th scope="col" th:text="#{issue.assignee}"></th>
+                <th scope="col" th:text="#{issue.date}"></th>
                 <th scope="col" th:text="#{issue.edit}"></th>
             </tr>
             </thead>
@@ -30,6 +31,7 @@
                 <td th:text="${issue.code}"></td>
                 <td th:text="${issue.description}"></td>
                 <td th:if="${issue.assignee != null}" th:text="${issue.assignee.name}"></td>
+                <td th:text="${issue.dateCreated}"></td>
                 <td>
                     <a th:href="@{/issue/edit/{id}(id=${issue.id})}" class="btn btn-primary" th:text="#{issue.edit}"></a>
                 </td>

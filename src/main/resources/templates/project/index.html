@@ -15,6 +15,7 @@
                 <th scope="col" th:text="#{project.name}">name</th>
                 <th scope="col" th:text="#{project.code}">edit</th>
                 <th scope="col" th:text="#{project.description}">description</th>
+                <th scope="col" th:text="#{project.date}">date</th>
                 <th scope="col" th:text="#{project.edit}">edit</th>
             </tr>
             </thead>
@@ -24,6 +25,7 @@
                 <td th:text="${project.name}"></td>
                 <td th:text="${project.code}"></td>
                 <td th:text="${project.description}"></td>
+                <td th:text="${project.dateCreated}"></td>
                 <td>
                     <a th:href="@{/project/edit/{id}(id=${project.id})}" class="btn btn-primary" th:text="#{project.edit}"></a>
                 </td>
