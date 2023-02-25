@@ -74,4 +74,11 @@ public class PersonService {
         person.setEmail(personAccount.getEmail());
         personRepository.save(person);
     }
+
+    public void savePersonPassword(PersonPassword personPassword) {
+        Person person = personRepository.findById(personPassword.getId()).orElseThrow();
+        String hashedPassword = bCryptPasswordEncoder.encode(personPassword.getPassword());
+        person.setPassword(hashedPassword);
+        personRepository.save(person);
+    }
 }

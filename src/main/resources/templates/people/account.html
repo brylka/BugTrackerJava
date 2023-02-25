@@ -9,10 +9,7 @@
 
     <h2 th:text="#{people.title.account}"></h2>
 
-
-    <form th:action="@{/user/account}"
-          th:object="${personAccount}"
-          method="post">
+    <form th:action="@{/user/account}" th:object="${person}" method="post">
 
         <input th:field="*{id}" type="hidden"/>
 

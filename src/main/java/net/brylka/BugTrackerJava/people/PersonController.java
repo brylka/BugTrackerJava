@@ -92,8 +92,7 @@ public class PersonController {
         ModelAndView modelAndView = new ModelAndView("people/account");
         String id = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         Person person = personRepository.findByUsername(id);
-        modelAndView.addObject("authorities", personService.findAuthorities());
-        modelAndView.addObject("personAccount", personService.editPerson(person.getId()));
+        modelAndView.addObject("person", personService.editPerson(person.getId()));
         return modelAndView;
     }
 
@@ -102,6 +101,25 @@ public class PersonController {
         ModelAndView modelAndView = new ModelAndView();
         personService.savePersonAccount(personAccount);
         modelAndView.setViewName("redirect:/user/account");
+        return modelAndView;
+    }
+
+    @GetMapping("/password")
+    ModelAndView showUserPassword() {
+        ModelAndView modelAndView = new ModelAndView("people/password");
+        String id = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        Person person = personRepository.findByUsername(id);
+        modelAndView.addObject("personPassword", new PersonPassword());
+        modelAndView.addObject("id", person.getId());
+        return modelAndView;
+    }
+
+    @PostMapping("/password")
+    ModelAndView editUserPassword(@ModelAttribute @Valid PersonPassword personPassword) {
+        // TODO sprawdzanie poprawności wproawdzanego hasła
+        ModelAndView modelAndView = new ModelAndView();
+        personService.savePersonPassword(personPassword);
+        modelAndView.setViewName("redirect:/user/password");
         return modelAndView;
     }
 }
