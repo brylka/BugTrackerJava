@@ -31,7 +31,7 @@
                 <td th:text="${issue.code}"></td>
                 <td th:text="${issue.description}"></td>
                 <td th:if="${issue.assignee != null}" th:text="${issue.assignee.name}"></td>
-                <td th:text="${issue.dateCreated}"></td>
+                <td th:text="${#dates.format(issue.dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td>
                     <a th:href="@{/issue/edit/{id}(id=${issue.id})}" class="btn btn-primary" th:text="#{issue.edit}"></a>
                 </td>
