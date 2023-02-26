@@ -13,8 +13,8 @@
         <input type="hidden" th:field="*{creator}" id="creator" th:value="${#authentication.principal}">
 
         <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.project}"></label>
-            <select class="form-control" th:field="*{project}">
+            <label for="project-select" class="col-form-label" th:text="#{issue.project}"></label>
+            <select class="form-control" th:field="*{project}" id="project-select" required>
                 <option th:value="${null}"></option>
                 <option th:each="p : ${projects}"
                         th:text="${p.name}"
@@ -22,8 +22,8 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.state}"></label>
-            <select class="form-control" th:field="*{state}" id="state-select">
+            <label for="state-select" class="col-form-label" th:text="#{issue.state}"></label>
+            <select class="form-control" th:field="*{state}" id="state-select" required>
                 <option th:value="${null}"></option>
                 <option th:each="s : ${T(net.brylka.BugTrackerJava.enums.State).values()}"
                         th:text="${#messages.msg('state.' + s)}"
@@ -32,8 +32,8 @@
         </div>
 
         <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.type}"></label>
-            <select class="form-control" th:field="*{type}" id="type-select">
+            <label for="type-select" class="col-form-label" th:text="#{issue.type}"></label>
+            <select class="form-control" th:field="*{type}" id="type-select" required>
                 <option th:value="${null}"></option>
                 <option th:each="t : ${T(net.brylka.BugTrackerJava.enums.Type).values()}"
                         th:text="${#messages.msg('type.' + t)}"
@@ -43,8 +43,8 @@
         </div>
 
         <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.assignee}"></label>
-            <select class="form-control" th:field="*{assignee}">
+            <label for="person-select" class="col-form-label" th:text="#{issue.assignee}"></label>
+            <select class="form-control" th:field="*{assignee}" id="person-select" required>
                 <option th:value="${null}"></option>
                 <option th:each="u : ${persons}"
                         th:text="${u.name}"
@@ -53,8 +53,8 @@
         </div>
 
         <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.priority}"></label>
-            <select class="form-control" th:field="*{priority}">
+            <label for="priority-select" class="col-form-label" th:text="#{issue.priority}"></label>
+            <select class="form-control" th:field="*{priority}" id="priority-select" required>
                 <option th:value="${null}"></option>
                 <option th:each="p : ${T(net.brylka.BugTrackerJava.enums.Priority).values()}"
                         th:text="${#messages.msg('priority.' + p)}"
@@ -63,21 +63,21 @@
         </div>
 
         <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.code}"></label>
+            <label for="code-input" class="col-form-label" th:text="#{issue.code}"></label>
             <input class="form-control" th:field="*{code}"
-                   th:placeholder="#{issue.placeholder.code}" required/>
+                   th:placeholder="#{issue.placeholder.code}" id="code-input" required/>
         </div>
 
         <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.name}"></label>
+            <label for="name-input" class="col-form-label" th:text="#{issue.name}"></label>
             <input class="form-control" th:field="*{name}"
-                   th:placeholder="#{issue.placeholder.name}" required/>
+                   th:placeholder="#{issue.placeholder.name}" id="name-input" required/>
         </div>
 
         <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.description}"></label>
+            <label for="description-textarea" class="col-form-label" th:text="#{issue.description}"></label>
             <textarea class="form-control" rows="5" th:field="*{description}"
-                      th:placeholder="#{issue.placeholder.description}" required></textarea>
+                      th:placeholder="#{issue.placeholder.description}" id="description-textarea" required></textarea>
         </div>
         <div class="float-end">
             <button class="btn btn-primary mt-4" type="submit" th:text="#{button.save}"></button>
