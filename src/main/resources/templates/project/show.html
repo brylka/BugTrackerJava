@@ -31,6 +31,25 @@
         <div class="float-end">
             <button class="btn btn-primary mt-4" type="submit" th:text="#{button.save}"></button>
             <a th:href="@{/project/}" class="btn btn-light mt-4" th:text="#{button.cancel}"></a>
+            <button th:if="${project.id != null}" type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#modal" th:text="#{project.delete}"></button>
         </div>
     </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel" th:text="#{project.modal.delete.title}"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" th:text="#{project.modal.delete.message}"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mt-4" data-bs-dismiss="modal" th:text="#{button.cancel}"></button>
+                    <a th:href="@{/project/delete/{id}(id=${project.id})}" class="btn btn-danger mt-4" th:text="#{project.delete}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>

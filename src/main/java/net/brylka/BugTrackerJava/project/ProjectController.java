@@ -1,7 +1,9 @@
 package net.brylka.BugTrackerJava.project;
 
+import net.brylka.BugTrackerJava.issue.IssueRepository;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,9 +15,12 @@ public class ProjectController {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectController(ProjectService projectService, ProjectRepository projectRepository) {
+    private final IssueRepository issueRepository;
+
+    public ProjectController(ProjectService projectService, ProjectRepository projectRepository, IssueRepository issueRepository) {
         this.projectService = projectService;
         this.projectRepository = projectRepository;
+        this.issueRepository = issueRepository;
     }
 
     @GetMapping("/")
@@ -47,6 +52,15 @@ public class ProjectController {
     ModelAndView edit(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("project/show");
         modelAndView.addObject("project", projectRepository.findById(id).orElseThrow());
+        return modelAndView;
+    }
+    @Transactional
+    @GetMapping("/delete/{id}")
+    @Secured("ROLE_MANAGE_PROJECT")
+    ModelAndView delete(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/project/");
+        issueRepository.deleteByProjectId(id);
+        projectRepository.deleteById(id);
         return modelAndView;
     }
 }
