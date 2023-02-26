@@ -1,11 +1,15 @@
 package net.brylka.BugTrackerJava.project;
 
+import net.brylka.BugTrackerJava.comment.CommentRepository;
+import net.brylka.BugTrackerJava.issue.Issue;
 import net.brylka.BugTrackerJava.issue.IssueRepository;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/project")
@@ -17,10 +21,13 @@ public class ProjectController {
 
     private final IssueRepository issueRepository;
 
-    public ProjectController(ProjectService projectService, ProjectRepository projectRepository, IssueRepository issueRepository) {
+    private final CommentRepository commentRepository;
+
+    public ProjectController(ProjectService projectService, ProjectRepository projectRepository, IssueRepository issueRepository, CommentRepository commentRepository) {
         this.projectService = projectService;
         this.projectRepository = projectRepository;
         this.issueRepository = issueRepository;
+        this.commentRepository = commentRepository;
     }
 
     @GetMapping("/")
@@ -59,6 +66,10 @@ public class ProjectController {
     @Secured("ROLE_MANAGE_PROJECT")
     ModelAndView delete(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("redirect:/project/");
+        List<Issue> issues = issueRepository.findByProjectId(id);
+        for (Issue issue : issues) {
+            commentRepository.deleteByIssueId(Long.valueOf(issue.getId()));
+        }
         issueRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
         return modelAndView;
