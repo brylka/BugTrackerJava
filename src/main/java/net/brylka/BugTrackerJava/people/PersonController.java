@@ -64,7 +64,13 @@ public class PersonController {
     @Secured("ROLE_MANAGE_USERS")
     ModelAndView editUser(@ModelAttribute @Valid Person person) {
         ModelAndView modelAndView = new ModelAndView();
-        personService.savePersonAccount(person);
+        if (person.getPassword().isEmpty()) {
+            Person existingPerson = personService.findById(person.getId());
+            person.setPassword(existingPerson.getPassword());
+            personService.savePersonAccountWithoutHash(person);
+        } else {
+            personService.savePersonAccount(person);
+        }
         modelAndView.setViewName("redirect:/user/");
         return modelAndView;
     }

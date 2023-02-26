@@ -29,7 +29,7 @@ public class Person {
     String username;
 
     @Column(nullable = false)
-    @NotBlank
+    //@NotBlank
     String password;
 
     @NotBlank

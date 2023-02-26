@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonService {
@@ -55,6 +56,10 @@ public class PersonService {
         personRepository.save(person);
     }
 
+    protected void savePersonAccountWithoutHash(Person person) {
+        personRepository.save(person);
+    }
+
     protected List<Authority> findAuthorities() {
         return (List<Authority>) authorityRepository.findAll();
     }
@@ -80,5 +85,10 @@ public class PersonService {
         String hashedPassword = bCryptPasswordEncoder.encode(personPassword.getPassword());
         person.setPassword(hashedPassword);
         personRepository.save(person);
+    }
+
+    public Person findById(Long id) {
+        Optional<Person> result = personRepository.findById(id);
+        return result.orElse(null);
     }
 }
