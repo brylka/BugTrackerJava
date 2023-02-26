@@ -19,7 +19,7 @@
                 <th scope="col" th:text="#{issue.description}"></th>
                 <th scope="col" th:text="#{issue.assignee}"></th>
                 <th scope="col" th:text="#{issue.date}"></th>
-                <th scope="col" th:text="#{issue.edit}"></th>
+                <th scope="col" th:text="#{issue.show}"></th>
             </tr>
             </thead>
             <tbody th:each="issue, nr : ${issues}">
@@ -33,7 +33,7 @@
                 <td th:if="${issue.assignee != null}" th:text="${issue.assignee.name}"></td>
                 <td th:text="${#dates.format(issue.dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td>
-                    <a th:href="@{/issue/edit/{id}(id=${issue.id})}" class="btn btn-primary" th:text="#{issue.edit}"></a>
+                    <a th:href="@{/issue/show/{id}(id=${issue.id})}" class="btn btn-primary" th:text="#{issue.show}"></a>
                 </td>
             </tr>
             </tbody>

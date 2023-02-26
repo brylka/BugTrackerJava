@@ -8,80 +8,47 @@
 
     <h2 th:text="#{issue.title.show}"></h2>
 
-    <form th:action="@{/issue/save}" th:object="${issue}" method="post">
-        <input type="hidden" th:field="*{id}" id="issue-id">
-        <input type="hidden" th:field="*{creator}" id="creator" th:value="${#authentication.principal}">
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th scope="col" th:text="#{issue.project.name}"></th>
+                <td th:text="${issue.get().project.name}"></td>
+                <th scope="col" th:text="#{issue.name}"></th>
+                <td th:text="${issue.get().name}"></td>
+                <th scope="col" th:text="#{issue.code}"></th>
+                <td th:text="${issue.get().code}"></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th scope="col" th:text="#{issue.description}"></th>
+                <td colspan="5" th:text="${issue.get().description}"></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th scope="col" th:text="#{issue.assignee}"></th>
+                <td th:if="${issue.get().assignee != null}" th:text="${issue.get().assignee.name}"></td>
+                <th scope="col" th:text="#{issue.date}"></th>
+                <td th:text="${#dates.format(issue.get().dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                <th scope="col" th:text="#{issue.state}"></th>
+                <td th:text="${#messages.msg('state.' + issue.get().state)}"></td>
+                <th scope="col" th:text="#{issue.type}"></th>
+                <td th:text="${#messages.msg('type.' + issue.get().type)}"></td>
+                <th scope="col" th:text="#{issue.priority}"></th>
+                <td th:text="${#messages.msg('priority.' + issue.get().priority)}"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="float-end">
+        <a th:href="@{/issue/edit/{id}(id=${issue.get().id})}" class="btn btn-primary mt-4" th:text="#{issue.edit}"></a>
+        <a th:href="@{/issue/}" class="btn btn-light mt-4" th:text="#{button.cancel}"></a>
+        <a th:href="@{/issue/delete/{id}(id=${issue.get().id})}" class="btn btn-danger mt-4" th:text="#{issue.delete}"></a>
+    </div>
 
-        <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.project}"></label>
-            <select class="form-control" th:field="*{project}">
-                <option th:value="${null}"></option>
-                <option th:each="p : ${projects}"
-                        th:text="${p.name}"
-                        th:value="${p.id}"></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.state}"></label>
-            <select class="form-control" th:field="*{state}" id="state-select">
-                <option th:value="${null}"></option>
-                <option th:each="s : ${T(net.brylka.BugTrackerJava.enums.State).values()}"
-                        th:text="${#messages.msg('state.' + s)}"
-                        th:value="${s}"></option>
-            </select>
-        </div>
 
-        <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.type}"></label>
-            <select class="form-control" th:field="*{type}" id="type-select">
-                <option th:value="${null}"></option>
-                <option th:each="t : ${T(net.brylka.BugTrackerJava.enums.Type).values()}"
-                        th:text="${#messages.msg('type.' + t)}"
-                        th:value="${t}"
-                        th:selected="${t == type}"></option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.assignee}"></label>
-            <select class="form-control" th:field="*{assignee}">
-                <option th:value="${null}"></option>
-                <option th:each="u : ${persons}"
-                        th:text="${u.name}"
-                        th:value="${u.id}"></option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.priority}"></label>
-            <select class="form-control" th:field="*{priority}">
-                <option th:value="${null}"></option>
-                <option th:each="p : ${T(net.brylka.BugTrackerJava.enums.Priority).values()}"
-                        th:text="${#messages.msg('priority.' + p)}"
-                        th:value="${p}"></option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.code}"></label>
-            <input class="form-control"
-                   th:field="*{code}"/>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.name}"></label>
-            <input class="form-control"
-                   th:field="*{name}"/>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label" th:text="#{issue.description}"></label>
-            <textarea class="form-control" rows="5"
-                      th:field="*{description}"></textarea>
-        </div>
-        <div class="float-end">
-            <button class="btn btn-primary mt-4" type="submit" th:text="#{button.save}"></button>
-            <a th:href="@{/issue/}" class="btn btn-light mt-4" th:text="#{button.cancel}"></a>
-        </div>
-    </form>
 </section>

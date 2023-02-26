@@ -7,8 +7,11 @@ import net.brylka.BugTrackerJava.project.ProjectRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/issue")
@@ -35,7 +38,7 @@ public class IssueController {
 
     @GetMapping("/create")
     ModelAndView createNewIssue() {
-        ModelAndView modelAndView = new ModelAndView("issue/show");
+        ModelAndView modelAndView = new ModelAndView("issue/create");
         modelAndView.addObject("issue", new Issue());
         modelAndView.addObject("projects", projectRepository.findAll());
         modelAndView.addObject("persons", personRepository.findAll());
@@ -44,7 +47,7 @@ public class IssueController {
 
     @GetMapping("/edit/{id}")
     ModelAndView editIssue(@PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("issue/show");
+        ModelAndView modelAndView = new ModelAndView("issue/create");
         modelAndView.addObject("issue", issueRepository.findById(id));
         modelAndView.addObject("projects", projectRepository.findAll());
         modelAndView.addObject("persons", personRepository.findAll());
@@ -58,6 +61,23 @@ public class IssueController {
         Person person = personRepository.findByUsername(authentication.getName());
         issue.setCreator(person);
         issueRepository.save(issue);
+        modelAndView.setViewName("redirect:/issue/");
+        return modelAndView;
+    }
+
+    @GetMapping("/show/{id}")
+    ModelAndView showIssue(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("issue/show");
+        modelAndView.addObject("issue", issueRepository.findById(id));
+        modelAndView.addObject("projects", projectRepository.findAll());
+        modelAndView.addObject("persons", personRepository.findAll());
+        return modelAndView;
+    }
+
+    @GetMapping("/delete/{id}")
+    ModelAndView deleteIssue(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+        issueRepository.deleteById(id);
         modelAndView.setViewName("redirect:/issue/");
         return modelAndView;
     }
