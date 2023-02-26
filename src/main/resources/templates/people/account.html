@@ -16,19 +16,19 @@
         <input type="hidden" th:field="*{id}">
 
         <div class="form-group">
-            <label for="username" th:text="#{login.username}"></label>
+            <label class="col-form-label" for="username" th:text="#{login.username}"></label>
             <input type="text" class="form-control" id="username" th:field="*{username}"
                    th:placeholder="#{people.placeholder.username}" autocomplete="off" required>
         </div>
 
         <div class="form-group">
-            <label for="name" th:text="#{people.name}"></label>
+            <label class="col-form-label" for="name" th:text="#{people.name}"></label>
             <input type="text" class="form-control" id="name" th:field="*{name}"
                    th:placeholder="#{people.placeholder.name}" autocomplete="off" required>
         </div>
 
         <div class="form-group">
-            <label for="email" th:text="#{people.email}"></label>
+            <label class="col-form-label" for="email" th:text="#{people.email}"></label>
             <input type="email" class="form-control" id="email" th:field="*{email}"
                    th:placeholder="#{people.placeholder.email}" autocomplete="off" required>
         </div>

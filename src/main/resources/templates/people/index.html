@@ -40,8 +40,8 @@
                     <a th:href="@{/user/delete/{id}(id=${user.id})}" class="btn btn-danger" th:text="#{people.delete}"></a>
                 </td>
                 <td>
-                        <span th:each="role : ${user.getAuthorities}">
-                            <div th:text="${role.name}"></div>
+                        <span th:each="authority : ${user.getAuthorities}">
+                            <div th:text="${#messages.msg('authority.' + authority.name)}"></div>
                         </span>
                 </td>
             </tr>
