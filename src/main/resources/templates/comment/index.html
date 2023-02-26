@@ -1,0 +1,38 @@
+<html th:lang="${#locale.language}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<title layout:fragment="title" th:text="#{comment.title.list}"></title>
+
+<section class="container" layout:fragment="content">
+
+    <h2 th:text="#{comment.title.list}"></h2>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" th:text="#{comment.description}"></th>
+            <th scope="col" th:text="#{comment.date}"></th>
+            <th scope="col" th:text="#{comment.author}"></th>
+        </tr>
+        </thead>
+        <tbody th:each="comment, nr : ${comments}">
+        <tr>
+            <th scope="row" th:text="${nr.index + 1}"></th>
+            <td th:text="${comment.description}"></td>
+            <td th:text="${#dates.format(comment.dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></td>
+            <td th:text="${comment.author.name}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/comment/save}" th:object="${comment}" method="post">
+        <input type="hidden" name="issue" th:value="${issue_id}"/>
+        <div class="form-group">
+            <label th:for="description" th:text="#{comment.description}"></label>
+            <textarea class="form-control" th:field="*{description}" id="description" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+    </form>
+</section>
