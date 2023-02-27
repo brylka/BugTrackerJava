@@ -6,54 +6,80 @@
 
 <section class="container" layout:fragment="content">
 
-        <h2 th:text="#{people.title.list}"></h2>
+    <h2 th:text="#{people.title.list}"></h2>
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col" th:text="#{people.username}">login</th>
-                <th scope="col" th:text="#{people.name}">name</th>
-                <th scope="col" th:text="#{people.email}">email</th>
-                <th scope="col" th:text="#{people.enabled}">enabled</th>
-                <th scope="col" th:text="#{people.edit}">edit</th>
-                <th scope="col" th:text="#{people.delete}">delete</th>
-                <th scope="col" th:text="#{people.roles}">roles</th>
-            </tr>
-            </thead>
-            <tbody th:each="user, nr : ${person}">
-            <tr>
-                <th scope="row" th:text="${nr.index + 1}"></th>
-                <td th:text="${user.username}"></td>
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.email}"></td>
-                <td th:if="${user.enabled == true}">
-                    <button type="button" class="btn btn-success" th:id="${'btn-'+ nr.index}" th:data-id="${user.id}" data-enabled="true">YES</button>
-                </td>
-                <td th:unless="${user.enabled == true}">
-                    <button type="button" class="btn btn-danger" th:id="${'btn-'+ nr.index}" th:data-id="${user.id}" data-enabled="false">NO</button>
-                </td>
-                <td>
-                    <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-primary" th:text="#{people.edit}"></a>
-                </td>
-                <td>
-                    <a th:href="@{/user/delete/{id}(id=${user.id})}" class="btn btn-danger" th:text="#{people.delete}"></a>
-                </td>
-                <td>
-                        <span th:each="authority : ${user.getAuthorities}">
-                            <div th:text="${#messages.msg('authority.' + authority.name)}"></div>
-                        </span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
-</div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" th:text="#{people.username}">login</th>
+            <th scope="col" th:text="#{people.name}">name</th>
+            <th scope="col" th:text="#{people.email}">email</th>
+            <th scope="col" th:text="#{people.enabled}">enabled</th>
+            <th scope="col" th:text="#{people.edit}">edit</th>
+            <th scope="col" th:text="#{people.delete}">delete</th>
+            <th scope="col" th:text="#{people.roles}">roles</th>
+        </tr>
+        </thead>
+        <tbody th:each="user, nr : ${person}">
+        <tr>
+            <th scope="row" th:text="${nr.index + 1}"></th>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:if="${user.enabled == true}">
+                <button type="button" class="btn btn-success btn-enable" th:id="${'btn-'+ nr.index}"
+                        th:data-id="${user.id}"
+                        data-enabled="true">YES
+                </button>
+            </td>
+            <td th:unless="${user.enabled == true}">
+                <button type="button" class="btn btn-danger" th:id="${'btn-'+ nr.index}" th:data-id="${user.id}"
+                        data-enabled="false">NO
+                </button>
+            </td>
+            <td>
+                <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-primary" th:text="#{people.edit}"></a>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-delete" th:attr="data-id=${user.id}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal" th:text="#{people.delete}"></button>
+            </td>
+            <td>
+                <span th:each="authority : ${user.getAuthorities}">
+                    <div th:text="${#messages.msg('authority.' + authority.name)}"></div>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel" th:text="#{people.modal.delete.title}"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" th:text="#{people.modal.delete.message}"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mt-4" data-bs-dismiss="modal"
+                            th:text="#{button.cancel}"></button>
+                    <a th:href="@{/user/delete/}" id="href-delete" class="btn btn-danger mt-4"
+                       th:text="#{people.delete}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <script layout:fragment="script">
 
     $(document).ready(function () {
-        $('button').click(function () {
+        $('.btn-enable').click(function () {
             var token = $('#_csrf').attr('content');
             var id = $(this).attr('id');
             var index = id.substring(4);
@@ -74,21 +100,26 @@
                 },
                 success: function (result) {
                     if (enabled == "false") {
-                        $("#"+btn_id).text("YES");
-                        $("#"+btn_id).attr("data-enabled", "true");
-                        $("#"+btn_id).removeClass("btn-danger");
-                        $("#"+btn_id).addClass("btn-success");
+                        $("#" + btn_id).text("YES");
+                        $("#" + btn_id).attr("data-enabled", "true");
+                        $("#" + btn_id).removeClass("btn-danger");
+                        $("#" + btn_id).addClass("btn-success");
                     } else {
-                        $("#"+btn_id).text("NO");
-                        $("#"+btn_id).attr("data-enabled", "false");
-                        $("#"+btn_id).removeClass("btn-success");
-                        $("#"+btn_id).addClass("btn-danger");
+                        $("#" + btn_id).text("NO");
+                        $("#" + btn_id).attr("data-enabled", "false");
+                        $("#" + btn_id).removeClass("btn-success");
+                        $("#" + btn_id).addClass("btn-danger");
                     }
                 },
                 failure: function (errMsg) {
                     alert(errMsg);
                 }
             });
+        });
+
+        $('.btn-delete').click(function () {
+            var id = $(this).data('id');
+            $('#href-delete').attr("href", "/user/delete/" + id);
         });
     });
 </script>
