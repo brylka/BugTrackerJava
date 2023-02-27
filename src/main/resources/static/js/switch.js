@@ -22,6 +22,10 @@
         document.body.setAttribute("data-theme", "dark");
         document.body.setAttribute("data-bs-theme", "dark");
 
+        document.querySelectorAll('input, select, textarea').forEach((element) => {
+            element.classList.add('bg-dark', 'text-white');
+        });
+
         if (document.body.classList.contains('text-dark')) {
             document.body.classList.replace('text-dark', 'text-light');
         } else {
@@ -54,6 +58,10 @@
         document.body.classList.add('bg-light');
         document.body.removeAttribute("data-theme");
         document.body.removeAttribute("data-bs-theme");
+
+        document.querySelectorAll('input, select, textarea').forEach((element) => {
+            element.classList.remove('bg-dark', 'text-white');
+        });
 
         if (document.body.classList.contains('text-light')) {
             document.body.classList.replace('text-light', 'text-dark');
