@@ -2,9 +2,13 @@ package net.brylka.BugTrackerJava.issue;
 
 import jakarta.persistence.EntityManager;
 import net.brylka.BugTrackerJava.comment.CommentRepository;
+import net.brylka.BugTrackerJava.enums.Priority;
+import net.brylka.BugTrackerJava.enums.State;
+import net.brylka.BugTrackerJava.enums.Type;
 import net.brylka.BugTrackerJava.people.Person;
 import net.brylka.BugTrackerJava.people.PersonRepository;
 import net.brylka.BugTrackerJava.project.ProjectRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -87,5 +91,19 @@ public class IssueController {
         issueRepository.deleteById(id);
         modelAndView.setViewName("redirect:/issue/");
         return modelAndView;
+    }
+
+    @PostMapping("/change")
+    ResponseEntity<String> change(@RequestParam("id") Long id,
+                                  @RequestParam("what") String what,
+                                  @RequestParam("change") String change) {
+        Issue issue = issueRepository.findById(id).orElseThrow();
+        switch (what) {
+            case "state" -> issue.setState(State.valueOf(change));
+            case "priority" -> issue.setPriority(Priority.valueOf(change));
+            case "type" -> issue.setType(Type.valueOf(change));
+        }
+        issueRepository.save(issue);
+        return ResponseEntity.ok().body("OK");
     }
 }

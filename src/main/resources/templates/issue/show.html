@@ -36,11 +36,60 @@
                 <th scope="col" th:text="#{issue.date}"></th>
                 <td th:text="${#dates.format(issue.get().dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <th scope="col" th:text="#{issue.state}"></th>
-                <td th:text="${#messages.msg('state.' + issue.get().state)}"></td>
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false" id="dropdownMenuState"
+                                th:text="${#messages.msg('state.' + issue.get().state)}"
+                                th:class="${((issue.get().state.toString() == 'TODO') ? 'btn-info' :
+                                ((issue.get().state.toString() == 'IN_PROGRESS') ? 'btn-warning' :
+                                ((issue.get().state.toString() == 'RESOLVED') ? 'btn-success' : 'btn-secondary'))) + ' btn dropdown-toggle'}"></button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuState">
+                            <th:block th:each="s : ${T(net.brylka.BugTrackerJava.enums.State).values()}">
+                                <li><a href="#" class="dropdown-item click-state"
+                                       th:text="${#messages.msg('state.' + s)}"
+                                       th:attr="data-change=${s}, data-what='state', data-text=${#messages.msg('state.' + s)}, data-id=${issue.get().id}"></a></li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </td>
                 <th scope="col" th:text="#{issue.type}"></th>
-                <td th:text="${#messages.msg('type.' + issue.get().type)}"></td>
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false" id="dropdownMenuType"
+                                th:text="${#messages.msg('type.' + issue.get().type)}"
+                                th:class="${((issue.get().type.toString() == 'BUG') ? 'btn-danger' :
+                                ((issue.get().type.toString() == 'FEATURE') ? 'btn-info' : 'btn-success')) + ' btn dropdown-toggle'}"></button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuType">
+                            <th:block th:each="t : ${T(net.brylka.BugTrackerJava.enums.Type).values()}">
+                                <li><a href="#" class="dropdown-item click-state"
+                                       th:text="${#messages.msg('type.' + t)}"
+                                       th:attr="data-change=${t}, data-what='type', data-text=${#messages.msg('type.' + t)}, data-id=${issue.get().id}"></a></li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </td>
                 <th scope="col" th:text="#{issue.priority}"></th>
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false" id="dropdownMenuPriority"
+                                th:text="${#messages.msg('priority.' + issue.get().priority)}"
+                                th:class="${((issue.get().priority.toString() == 'LOW') ? 'btn-success' :
+                                ((issue.get().priority.toString() == 'MEDIUM') ? 'btn-warning' : 'btn-danger')) + ' btn dropdown-toggle'}"></button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuPriority">
+                            <th:block th:each="p : ${T(net.brylka.BugTrackerJava.enums.Priority).values()}">
+                                <li><a href="#" class="dropdown-item click-state"
+                                       th:text="${#messages.msg('priority.' + p)}"
+                                       th:attr="data-change=${p}, data-what='priority', data-text=${#messages.msg('priority.' + p)}, data-id=${issue.get().id}"></a></li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </td>
+                <!--/*
                 <td th:text="${#messages.msg('priority.' + issue.get().priority)}"></td>
+                */-->
             </tr>
         </table>
     </div>
@@ -49,9 +98,6 @@
         <a th:href="@{/issue/edit/{id}(id=${issue.get().id})}" class="btn btn-primary mt-4" th:text="#{issue.edit}"></a>
         <a th:href="@{/issue/}" class="btn btn-light mt-4" th:text="#{button.cancel}"></a>
         <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#modal" th:text="#{issue.delete}"></button>
-        <!--/*
-        <a th:href="@{/issue/delete/{id}(id=${issue.get().id})}" class="btn btn-danger mt-4" th:text="#{issue.delete}"></a>
-        */-->
     </div>
 
 
@@ -73,3 +119,66 @@
     </div>
 
 </section>
+
+<script layout:fragment="script">
+
+    $(document).ready(function () {
+        $('.click-state').click(function () {
+            var token = $('#_csrf').attr('content');
+            var id = $(this).attr("data-id");
+            var what = $(this).attr("data-what");
+            var change = $(this).attr("data-change");
+            var text = $(this).attr("data-text");
+            $.ajax({
+                method: "POST",
+                url: "/issue/change",
+                data: {
+                    "_csrf": token,
+                    "id": id,
+                    "what": what,
+                    "change": change
+                },
+                success: function (result) {
+                    if (result == "OK") {
+                        if (what == "state") {
+                            $("#dropdownMenuState").removeClass("btn-warning btn-success btn-info btn-secondary");
+                            $("#dropdownMenuState").text(text);
+                            if (change == "TODO") {
+                                $("#dropdownMenuState").addClass("btn-info");
+                            } else if (change == "IN_PROGRESS") {
+                                $("#dropdownMenuState").addClass("btn-warning");
+                            } else if (change == "RESOLVED") {
+                                $("#dropdownMenuState").addClass("btn-success");
+                            } else if (change == "CLOSED") {
+                                $("#dropdownMenuState").addClass("btn-secondary");
+                            }
+                        } else if (what == "type") {
+                            $("#dropdownMenuType").removeClass("btn-danger btn-success btn-info");
+                            $("#dropdownMenuType").text(text);
+                            if (change == "BUG") {
+                                $("#dropdownMenuType").addClass("btn-danger");
+                            } else if (change == "FEATURE") {
+                                $("#dropdownMenuType").addClass("btn-info");
+                            } else if (change == "TASK") {
+                                $("#dropdownMenuType").addClass("btn-success");
+                            }
+                        } else if (what == "priority") {
+                            $("#dropdownMenuPriority").removeClass("btn-danger btn-success btn-warning");
+                            $("#dropdownMenuPriority").text(text);
+                            if (change == "LOW") {
+                                $("#dropdownMenuPriority").addClass("btn-success");
+                            } else if (change == "MEDIUM") {
+                                $("#dropdownMenuPriority").addClass("btn-warning");
+                            } else if (change == "HIGH") {
+                                $("#dropdownMenuPriority").addClass("btn-danger");
+                            }
+                        }
+                    }
+                },
+                failure: function (errMsg) {
+                    alert(errMsg);
+                }
+            });
+        });
+    });
+</script>
