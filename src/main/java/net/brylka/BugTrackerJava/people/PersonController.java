@@ -79,7 +79,7 @@ public class PersonController {
     @Secured("ROLE_MANAGE_USERS")
     ModelAndView deleteUser(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView();
-        personService.deletePerson(id);
+        personService.markPersonAsDeleted(id);
         modelAndView.setViewName("redirect:/user/");
         return modelAndView;
     }

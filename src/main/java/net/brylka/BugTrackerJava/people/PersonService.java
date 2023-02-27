@@ -68,6 +68,12 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
+    public void markPersonAsDeleted(Long id) {
+        Person person = findById(id);
+        person.setDeleted(true);
+        personRepository.save(person);
+    }
+
     public Person editPerson(Long id) {
         return personRepository.findById(id).orElseThrow();
     }

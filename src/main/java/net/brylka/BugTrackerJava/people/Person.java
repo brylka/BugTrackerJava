@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.brylka.BugTrackerJava.authority.Authority;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Where;
 
 import java.util.Set;
 
@@ -16,7 +17,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table( name = "person")
+@Table(name = "person")
+@Where(clause = "deleted = false")
 public class Person {
 
     @Id
@@ -45,6 +47,10 @@ public class Person {
     @Column(nullable = false)
     @ColumnDefault(value = "true")
     Boolean enabled = true;
+
+    @Column(nullable = false)
+    @ColumnDefault(value = "false")
+    Boolean deleted = false;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "person_authorities",
