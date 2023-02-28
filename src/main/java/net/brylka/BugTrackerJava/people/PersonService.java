@@ -50,7 +50,7 @@ public class PersonService {
         }
     }
 
-    protected void savePersonAccount(Person person) {
+    public void savePersonAccount(Person person) {
         String hashedPassword = bCryptPasswordEncoder.encode(person.password);
         person.setPassword(hashedPassword);
         personRepository.save(person);
@@ -96,5 +96,9 @@ public class PersonService {
     public Person findById(Long id) {
         Optional<Person> result = personRepository.findById(id);
         return result.orElse(null);
+    }
+
+    public Person findByEmail(String email) {
+        return personRepository.findByEmail(email);
     }
 }

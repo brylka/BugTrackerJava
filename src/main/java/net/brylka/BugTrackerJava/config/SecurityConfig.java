@@ -20,7 +20,7 @@ public class SecurityConfig  {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .requestMatchers("/css/**", "/js/**").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/forgot-password**", "/reset-password**").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin().loginPage("/login").permitAll()
