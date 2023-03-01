@@ -18,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Controller
 @RequestMapping("/forgot-password")
@@ -46,23 +48,33 @@ public class ForgotPasswordController {
                                         BindingResult result,
                                         Model model,
                                         RedirectAttributes attributes,
-                                        HttpServletRequest request){
+                                        HttpServletRequest request) {
 
         Person person = personService.findByEmail(passwordForgot.getEmail());
-        PasswordResetToken token = new PasswordResetToken();
-        token.setPerson(person);
-        token.setToken(UUID.randomUUID().toString());
-        token.setExpirationDate(LocalDateTime.now().plusMinutes(30));
-        //System.out.println("Token: " + token.getToken() + " dla: " + person.getUsername());
-        //System.out.println("http://localhost:8080/reset-password?token=" + token.getToken());
+        if (person != null) {
+            PasswordResetToken token = new PasswordResetToken();
+            token.setPerson(person);
+            token.setToken(UUID.randomUUID().toString());
+            token.setExpirationDate(LocalDateTime.now().plusMinutes(30));
+            //System.out.println("Token: " + token.getToken() + " dla: " + person.getUsername());
+            //System.out.println("http://localhost:8080/reset-password?token=" + token.getToken());
 
-        Mail mail = new Mail();
-        mail.setRecipient(person.getEmail());
-        mail.setSubject("Reset password");
-        mail.setContent("http://localhost:8080/reset-password?token=" + token.getToken());
-        mailService.send(mail);
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        passwordResetTokenRepository.save(token);
-        return "redirect:/";
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    Mail mail = new Mail();
+                    mail.setRecipient(person.getEmail());
+                    mail.setSubject("Reset password");
+                    mail.setContent("http://localhost:8080/reset-password?token=" + token.getToken());
+                    mailService.send(mail);
+                }
+            });
+
+            passwordResetTokenRepository.save(token);
+        }
+        attributes.addFlashAttribute("message", "ok");
+        return "redirect:/forgot-password";
     }
 }
