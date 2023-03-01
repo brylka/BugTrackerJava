@@ -1,6 +1,6 @@
 <html th:lang="${#locale.language}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/_layout}">
+      layout:decorate="~{layout/_layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <title layout:fragment="title" th:text="#{people.title.list}"></title>
 
@@ -15,9 +15,9 @@
             <th scope="col" th:text="#{people.username}">login</th>
             <th scope="col" th:text="#{people.name}">name</th>
             <th scope="col" th:text="#{people.email}">email</th>
-            <th scope="col" th:text="#{people.enabled}">enabled</th>
-            <th scope="col" th:text="#{people.edit}">edit</th>
-            <th scope="col" th:text="#{people.delete}">delete</th>
+            <th sec:authorize="hasRole('ROLE_MANAGE_USERS')" scope="col" th:text="#{people.enabled}">enabled</th>
+            <th sec:authorize="hasRole('ROLE_MANAGE_USERS')" scope="col" th:text="#{people.edit}">edit</th>
+            <th sec:authorize="hasRole('ROLE_MANAGE_USERS')" scope="col" th:text="#{people.delete}">delete</th>
             <th scope="col" th:text="#{people.roles}">roles</th>
         </tr>
         </thead>
@@ -27,21 +27,20 @@
             <td th:text="${user.username}"></td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.email}"></td>
-            <td th:if="${user.enabled == true}">
+            <td sec:authorize="hasRole('ROLE_MANAGE_USERS')" th:if="${user.enabled == true}">
                 <button type="button" class="btn btn-success btn-enable" th:id="${'btn-'+ nr.index}"
-                        th:data-id="${user.id}"
-                        data-enabled="true">YES
+                        th:data-id="${user.id}" data-enabled="true" th:text="#{people.enabled.yes}">
                 </button>
             </td>
-            <td th:unless="${user.enabled == true}">
-                <button type="button" class="btn btn-danger" th:id="${'btn-'+ nr.index}" th:data-id="${user.id}"
-                        data-enabled="false">NO
+            <td sec:authorize="hasRole('ROLE_MANAGE_USERS')" th:unless="${user.enabled == true}">
+                <button type="button" class="btn btn-danger btn-enable" th:id="${'btn-'+ nr.index}"
+                        th:data-id="${user.id}" data-enabled="false" th:text="#{people.enabled.no}">
                 </button>
             </td>
-            <td>
+            <td sec:authorize="hasRole('ROLE_MANAGE_USERS')">
                 <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-primary" th:text="#{people.edit}"></a>
             </td>
-            <td>
+            <td sec:authorize="hasRole('ROLE_MANAGE_USERS')">
                 <button type="button" class="btn btn-danger btn-delete" th:attr="data-id=${user.id}"
                         data-bs-toggle="modal"
                         data-bs-target="#modal" th:text="#{people.delete}"></button>
@@ -100,12 +99,12 @@
                 },
                 success: function (result) {
                     if (enabled == "false") {
-                        $("#" + btn_id).text("YES");
+                        $("#" + btn_id).text("[[#{people.enabled.yes}]]");
                         $("#" + btn_id).attr("data-enabled", "true");
                         $("#" + btn_id).removeClass("btn-danger");
                         $("#" + btn_id).addClass("btn-success");
                     } else {
-                        $("#" + btn_id).text("NO");
+                        $("#" + btn_id).text("[[#{people.enabled.no}]]");
                         $("#" + btn_id).attr("data-enabled", "false");
                         $("#" + btn_id).removeClass("btn-success");
                         $("#" + btn_id).addClass("btn-danger");

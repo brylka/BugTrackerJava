@@ -35,16 +35,32 @@
         </div>
         <td>
             <div th:each="authority : ${authorities}">
-                <input name="roles" type="checkbox"
+                <input type="checkbox"
                        th:value="${authority.id}"
                        th:field="*{authorities}">
-                <label th:text="${#messages.msg('authority.' + authority.name)}" for="${#ids.prev(roles)}"></label>
+                <label th:text="${#messages.msg('authority.' + authority.name)}" th:for="${#ids.prev('authorities')}"></label>
             </div>
-
         </td>
-
         <div>
             <button class="btn btn-primary mt-4" type="submit" th:text="#{button.save}"></button>
         </div>
     </form>
 </section>
+
+<script layout:fragment="script">
+
+    $(document).ready(function () {
+        $('#authorities3').change(function () {
+            if ($('#authorities3').is(':checked')) {
+                $('#authorities4').prop('checked', true);
+            }
+        });
+
+        $('#authorities4').change(function () {
+            if (!$('#authorities4').is(':checked')) {
+                $('#authorities3').prop('checked', false);
+            }
+        });
+    });
+
+</script>
