@@ -40,7 +40,7 @@ public class ResetPasswordController {
     public String processPasswordReset(@RequestParam(name = "token", required = false) String token,
                                        @RequestParam(name = "password", required = false) String password,
                                        @RequestParam(name = "confirmPassword", required = false) String confirmPassword){
-        System.out.println("Token: " + token + " Password: " + password + " Confirm Password: " + confirmPassword);
+        //System.out.println("Token: " + token + " Password: " + password + " Confirm Password: " + confirmPassword);
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
         Person person = passwordResetToken.getPerson();
         person.setPassword(password);

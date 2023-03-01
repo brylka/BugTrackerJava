@@ -2,6 +2,8 @@ package net.brylka.BugTrackerJava.password;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import net.brylka.BugTrackerJava.mail.Mail;
+import net.brylka.BugTrackerJava.mail.MailService;
 import net.brylka.BugTrackerJava.people.Person;
 import net.brylka.BugTrackerJava.people.PersonService;
 import org.springframework.stereotype.Controller;
@@ -23,11 +25,13 @@ public class ForgotPasswordController {
 
     private final PersonService personService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    final private MailService mailService;
 
     public ForgotPasswordController(PersonService personService,
-                                    PasswordResetTokenRepository passwordResetTokenRepository) {
+                                    PasswordResetTokenRepository passwordResetTokenRepository, MailService mailService) {
         this.personService = personService;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.mailService = mailService;
     }
 
     @GetMapping
@@ -49,8 +53,15 @@ public class ForgotPasswordController {
         token.setPerson(person);
         token.setToken(UUID.randomUUID().toString());
         token.setExpirationDate(LocalDateTime.now().plusMinutes(30));
-        System.out.println("Token: " + token.getToken() + " dla: " + person.getUsername());
-        System.out.println("http://localhost:8080/reset-password?token=" + token.getToken());
+        //System.out.println("Token: " + token.getToken() + " dla: " + person.getUsername());
+        //System.out.println("http://localhost:8080/reset-password?token=" + token.getToken());
+
+        Mail mail = new Mail();
+        mail.setRecipient(person.getEmail());
+        mail.setSubject("Reset password");
+        mail.setContent("http://localhost:8080/reset-password?token=" + token.getToken());
+        mailService.send(mail);
+
         passwordResetTokenRepository.save(token);
         return "redirect:/";
     }
