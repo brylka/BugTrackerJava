@@ -1,4 +1,4 @@
-package net.brylka.BugTrackerJava.password;
+package net.brylka.BugTrackerJava.passwordrecovery;
 
 import jakarta.persistence.*;
 import lombok.Data;

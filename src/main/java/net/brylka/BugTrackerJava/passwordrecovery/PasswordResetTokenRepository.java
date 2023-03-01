@@ -1,4 +1,4 @@
-package net.brylka.BugTrackerJava.password;
+package net.brylka.BugTrackerJava.passwordrecovery;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
