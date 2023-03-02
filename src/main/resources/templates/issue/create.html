@@ -15,7 +15,7 @@
         <div class="form-group">
             <label for="project-select" class="col-form-label" th:text="#{issue.project}"></label>
             <select class="form-control" th:field="*{project}" id="project-select" required>
-                <option th:value="${null}"></option>
+                <option th:value="${null}" th:text="#{issue.placeholder.project}"></option>
                 <option th:each="p : ${projects}"
                         th:text="${p.name}"
                         th:value="${p.id}"></option>
@@ -24,7 +24,7 @@
         <div class="form-group">
             <label for="state-select" class="col-form-label" th:text="#{issue.state}"></label>
             <select class="form-control" th:field="*{state}" id="state-select" required>
-                <option th:value="${null}"></option>
+                <option th:value="${null}" th:text="#{issue.placeholder.state}" ></option>
                 <option th:each="s : ${T(net.brylka.BugTrackerJava.enums.State).values()}"
                         th:text="${#messages.msg('state.' + s)}"
                         th:value="${s}"></option>
@@ -34,7 +34,7 @@
         <div class="form-group">
             <label for="type-select" class="col-form-label" th:text="#{issue.type}"></label>
             <select class="form-control" th:field="*{type}" id="type-select" required>
-                <option th:value="${null}"></option>
+                <option th:value="${null}" th:text="#{issue.placeholder.type}"></option>
                 <option th:each="t : ${T(net.brylka.BugTrackerJava.enums.Type).values()}"
                         th:text="${#messages.msg('type.' + t)}"
                         th:value="${t}"
@@ -45,7 +45,7 @@
         <div class="form-group">
             <label for="person-select" class="col-form-label" th:text="#{issue.assignee}"></label>
             <select class="form-control" th:field="*{assignee}" id="person-select" required>
-                <option th:value="${null}"></option>
+                <option th:value="${null}" th:text="#{issue.placeholder.assignee}"></option>
                 <option th:each="u : ${persons}"
                         th:text="${u.name}"
                         th:value="${u.id}"></option>
@@ -55,7 +55,7 @@
         <div class="form-group">
             <label for="priority-select" class="col-form-label" th:text="#{issue.priority}"></label>
             <select class="form-control" th:field="*{priority}" id="priority-select" required>
-                <option th:value="${null}"></option>
+                <option th:value="${null}"th:text="#{issue.placeholder.priority}"></option>
                 <option th:each="p : ${T(net.brylka.BugTrackerJava.enums.Priority).values()}"
                         th:text="${#messages.msg('priority.' + p)}"
                         th:value="${p}"></option>
