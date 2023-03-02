@@ -56,26 +56,33 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col" th:text="#{issue.project.name}"></th>
-                <th scope="col" th:text="#{issue.state}"></th>
-                <th scope="col" th:text="#{issue.name}"></th>
-                <th scope="col" th:text="#{issue.code}"></th>
-                <th scope="col" th:text="#{issue.description}"></th>
-                <th scope="col" th:text="#{issue.assignee}"></th>
-                <th scope="col" th:text="#{issue.date}"></th>
+                <th scope="col"><a href="#" class="sort-by text-decoration-none text-reset" data-sort="name"
+                                   th:attr="data-text=#{issue.project.name}" th:text="#{issue.project.name}"></a></th>
+                <th scope="col"><a href="#" class="sort-by text-decoration-none text-reset" data-sort="state"
+                                   th:attr="data-text=#{issue.state}" th:text="#{issue.state}"></a></th>
+                <th scope="col"><a href="#" class="sort-by text-decoration-none text-reset" data-sort="name2"
+                                   th:attr="data-text=#{issue.name}" th:text="#{issue.name}"></a></th>
+                <th scope="col"><a href="#" class="sort-by text-decoration-none text-reset" data-sort="code"
+                                   th:attr="data-text=#{issue.code}" th:text="#{issue.code}"></a></th>
+                <th scope="col"><a href="#" class="sort-by text-decoration-none text-reset" data-sort="description"
+                                   th:attr="data-text=#{issue.description}" th:text="#{issue.description}"></a></th>
+                <th scope="col"><a href="#" class="sort-by text-decoration-none text-reset" data-sort="assignee"
+                                   th:attr="data-text=#{issue.assignee}" th:text="#{issue.assignee}"></a></th>
+                <th scope="col"><a href="#" class="sort-by text-decoration-none text-reset" data-sort="date"
+                                   th:attr="data-text=#{issue.date}" th:text="#{issue.date}"></a></th>
                 <th scope="col" th:text="#{issue.show}"></th>
             </tr>
             </thead>
-            <tbody th:each="issue, nr : ${issues}">
-            <tr>
-                <th scope="row" th:text="${nr.index + 1}"></th>
+            <tbody>
+            <tr th:each="issue, nr : ${issues}">
+                <td scope="row" th:text="${nr.index + 1}"></td>
                 <td th:text="${issue.project.name}"></td>
                 <td th:text="${#messages.msg('state.' + issue.state)}"></td>
                 <td th:text="${issue.name}"></td>
                 <td th:text="${issue.code}"></td>
                 <td th:text="${issue.description}"></td>
                 <td th:if="${issue.assignee != null}" th:text="${issue.assignee.name}"></td>
-                <td th:text="${#dates.format(issue.dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(issue.dateCreated, 'yyyy-MM-dd HH:mm:ss')}"></td>
                 <td>
                     <a th:href="@{/issue/show/{id}(id=${issue.id})}" class="btn btn-primary"
                        th:text="#{issue.show}"></a>
@@ -85,3 +92,75 @@
         </table>
     </div>
 </section>
+
+<script layout:fragment="script">
+    $(document).ready(() => {
+        let sortBy;
+        let order = 'desc';
+
+        $('.sort-by').click((e) => {
+            e.preventDefault();
+            sortBy = $(e.target).attr('data-sort');
+            order = sortBy === $(e.target).attr('data-sort') ? order === 'asc' ? 'desc' : 'asc' : 'desc';
+            const rows = $('tbody tr').get();
+            const arrow = order === 'asc' ? '&#x25BC;' : '&#x25B2;';
+
+            $('.sort-by').each(function () {
+                if ($(this).attr('data-sort') !== sortBy) {
+                    $(this).html($(this).attr('data-text'));
+                }
+            });
+
+            $(e.target).html($(e.target).attr('data-text') + ' ' + arrow);
+
+            rows.sort((a, b) => {
+                let A;
+                let B;
+                if (sortBy === 'name') {
+                    A = $(a).children('td').eq(1).text().toUpperCase();
+                    B = $(b).children('td').eq(1).text().toUpperCase();
+                } else if (sortBy === 'state') {
+                    A = $(a).children('td').eq(2).text().toUpperCase();
+                    B = $(b).children('td').eq(2).text().toUpperCase();
+                } else if (sortBy === 'name2') {
+                    A = $(a).children('td').eq(3).text().toUpperCase();
+                    B = $(b).children('td').eq(3).text().toUpperCase();
+                } else if (sortBy === 'code') {
+                    A = $(a).children('td').eq(4).text().toUpperCase();
+                    B = $(b).children('td').eq(4).text().toUpperCase();
+                } else if (sortBy === 'description') {
+                    A = $(a).children('td').eq(5).text().toUpperCase();
+                    B = $(b).children('td').eq(5).text().toUpperCase();
+                } else if (sortBy === 'assignee') {
+                    A = $(a).children('td').eq(6).text().toUpperCase();
+                    B = $(b).children('td').eq(6).text().toUpperCase();
+                } else if (sortBy === 'date') {
+                    A = $(a).children('td').eq(7).text().toUpperCase();
+                    B = $(b).children('td').eq(7).text().toUpperCase();
+                }
+
+                if (order === 'asc') {
+                    if (A < B) {
+                        return -1;
+                    }
+                    if (A > B) {
+                        return 1;
+                    }
+                } else {
+                    if (A > B) {
+                        return -1;
+                    }
+                    if (A < B) {
+                        return 1;
+                    }
+                }
+                return 0;
+            });
+
+            $.each(rows, (index, row) => {
+                $(row).children('td').eq(0).text(index + 1);
+                $('tbody').append(row);
+            });
+        });
+    });
+</script>
