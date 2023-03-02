@@ -1,6 +1,5 @@
 package net.brylka.BugTrackerJava.issue;
 
-import jakarta.persistence.EntityManager;
 import net.brylka.BugTrackerJava.comment.CommentRepository;
 import net.brylka.BugTrackerJava.enums.Priority;
 import net.brylka.BugTrackerJava.enums.State;
@@ -13,11 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/issue")
@@ -26,22 +22,24 @@ public class IssueController {
     final IssueRepository issueRepository;
     final ProjectRepository projectRepository;
     final PersonRepository personRepository;
-    final EntityManager entityManager;
     private final CommentRepository commentRepository;
 
-    public IssueController(IssueRepository issueRepository, ProjectRepository projectRepository, PersonRepository personRepository, EntityManager entityManager,
-                           CommentRepository commentRepository) {
+    public IssueController(IssueRepository issueRepository, ProjectRepository projectRepository,
+                           PersonRepository personRepository, CommentRepository commentRepository) {
         this.issueRepository = issueRepository;
         this.projectRepository = projectRepository;
         this.personRepository = personRepository;
-        this.entityManager = entityManager;
         this.commentRepository = commentRepository;
     }
 
     @GetMapping("/")
-    ModelAndView index() {
+    ModelAndView index(@ModelAttribute IssueFilter issueFilter) {
         ModelAndView modelAndView = new ModelAndView("issue/index");
-        modelAndView.addObject("issues", issueRepository.findAll());
+        modelAndView.addObject("issues", issueRepository.findAll(issueFilter.buildQuery()));
+        modelAndView.addObject("filter", issueFilter);
+        modelAndView.addObject("projects", projectRepository.findAll());
+        modelAndView.addObject("states", State.values());
+        modelAndView.addObject("assignees", personRepository.findAll());
         return modelAndView;
     }
 

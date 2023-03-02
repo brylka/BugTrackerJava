@@ -6,8 +6,52 @@
 
 <section class="container" layout:fragment="content">
 
-        <h2 th:text="#{issue.title.list}"></h2>
+    <h2 th:text="#{issue.title.list}"></h2>
 
+    <div class="row">
+        <form th:action="@{/issue/}"
+              th:object="${filter}">
+            <div class="row">
+                <div class="col-auto">
+                    <select th:field="*{project}" class="form-control">
+                        <option th:value="${null}"
+                                th:text="#{issue.search.placeholder.project}">
+                        </option>
+                        <option th:each="p : ${projects}"
+                                th:value="${p.id}"
+                                th:text="${p.name}"></option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <select th:field="*{state}" class="form-control">
+                        <option th:value="${null}"
+                                th:text="#{issue.search.placeholder.state}"></option>
+                        <option th:each="s : ${states}"
+                                th:value="${s}"
+                                th:text="${#messages.msg('state.' + s)}"></option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <select th:field="*{assignee}" class="form-control">
+                        <option th:value="${null}"
+                                th:text="#{issue.search.placeholder.assignee}"></option>
+                        <option th:each="p : ${assignees}"
+                                th:value="${p.id}"
+                                th:text="${p.name}"></option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" type="submit"
+                            th:text="#{issue.search.button.search}"></button>
+                    <a th:href="@{/issue/}"
+                       th:text="#{issue.search.button.clear}"
+                       class="btn btn-secondary"></a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
         <table class="table table-striped">
             <thead>
             <tr>
@@ -26,16 +70,18 @@
             <tr>
                 <th scope="row" th:text="${nr.index + 1}"></th>
                 <td th:text="${issue.project.name}"></td>
-                <td th:text="${issue.state}"></td>
+                <td th:text="${#messages.msg('state.' + issue.state)}"></td>
                 <td th:text="${issue.name}"></td>
                 <td th:text="${issue.code}"></td>
                 <td th:text="${issue.description}"></td>
                 <td th:if="${issue.assignee != null}" th:text="${issue.assignee.name}"></td>
                 <td th:text="${#dates.format(issue.dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td>
-                    <a th:href="@{/issue/show/{id}(id=${issue.id})}" class="btn btn-primary" th:text="#{issue.show}"></a>
+                    <a th:href="@{/issue/show/{id}(id=${issue.id})}" class="btn btn-primary"
+                       th:text="#{issue.show}"></a>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
 </section>
