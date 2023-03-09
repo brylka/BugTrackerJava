@@ -1,5 +1,6 @@
 <html th:lang="${#locale.language}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout/_layout}">
 
 <title layout:fragment="title" th:text="#{comment.title.list}"></title>
@@ -21,7 +22,22 @@
             <tbody th:each="comment, nr : ${comments}">
             <tr>
                 <th scope="row" th:text="${nr.index + 1}"></th>
-                <td th:text="${comment.description}"></td>
+                <td>
+                    <div class="comment-text" th:text="${comment.description}"></div>
+                    <div class="comment-edit-text" style="display: none;">
+                        <form th:action="@{/comment/edit}" method="post">
+                            <input type="hidden" name="id" th:value="${comment.id}"/>
+                            <input type="hidden" name="author" th:value="${comment.getAuthor().id}"/>
+                            <input type="hidden" name="issue" th:value="${comment.getIssue().id}"/>
+                            <textarea class="form-control" name="description" rows="3" th:text="${comment.description}"></textarea>
+                            <div class="float-end">
+                                <button class="btn btn-light mt-4" type="button" th:text="#{button.cancel}"></button>
+                                <button class="btn btn-primary mt-4" type="submit" th:text="#{comment.edit}"></button>
+                                <a th:href="@{/comment/delete/{id}(id=${comment.id})}" class="btn btn-danger mt-4" th:text="#{comment.delete}"></a>
+                            </div>
+                        </form>
+                    </div>
+                </td>
                 <td th:text="${#dates.format(comment.dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td th:text="${comment.author.name}"></td>
             </tr>
@@ -41,3 +57,15 @@
         </div>
     </form>
 </section>
+
+<script layout:fragment="script">
+    $('.comment-text').on('click', function(){
+        $(this).hide();
+        $(this).siblings('.comment-edit-text').show();
+    });
+
+    $('.btn-light').on('click', function(){
+        $(this).closest('.comment-edit-text').hide();
+        $(this).closest('.comment-edit-text').siblings('.comment-text').show();
+    });
+</script>

@@ -37,4 +37,21 @@ public class CommentController {
         modelAndView.setViewName("redirect:/comment/" + comment.getIssue().getId());
         return modelAndView;
     }
+
+    @PostMapping("/edit")
+    ModelAndView editComment(@ModelAttribute Comment comment) {
+        ModelAndView modelAndView = new ModelAndView();
+        commentRepository.save(comment);
+        modelAndView.setViewName("redirect:/comment/" + comment.getIssue().getId());
+        return modelAndView;
+    }
+
+    @GetMapping("/delete/{id}")
+    ModelAndView deleteComment(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+        Comment comment = commentRepository.findById(Math.toIntExact(id)).orElseThrow();
+        commentRepository.delete(comment);
+        modelAndView.setViewName("redirect:/comment/" + comment.getIssue().getId());
+        return modelAndView;
+    }
 }

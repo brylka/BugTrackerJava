@@ -109,7 +109,7 @@
                 <div class="modal-body" th:text="#{issue.modal.delete.message}"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mt-4" data-bs-dismiss="modal" th:text="#{button.cancel}"></button>
-                    <a th:href="@{/issue/delete/{id}(id=${issue.get().id})}" class="btn btn-danger mt-4" th:text="#{issue.delete}"></a>
+                    <a th:href="@{/issue/delete/{id}(id=${issue.get().id})}" class="btn btn-danger mt-4" th:text="#{comment.delete}"></a>
                 </div>
             </div>
         </div>
